@@ -6,16 +6,6 @@ def main():
     # Test out the get_pokemon_info() function
     # Use breakpoints to view returned dictionary
     poke_info = get_pokemon_info("Rockruff")
-    if poke_info:
-        print(poke_info)
-    
-    # Test out the get_all_pokemon_names() function
-    all_pokemon_names = get_all_pokemon_names()
-    if all_pokemon_names:
-        print("Total Pokémon names:", len(all_pokemon_names))
-    
-    # Test out the download_pokemon_artwork() function
-    download_pokemon_artwork("pikachu", "pikachu.png")
     return
 
 def get_pokemon_info(pokemon):
@@ -29,17 +19,20 @@ def get_pokemon_info(pokemon):
     """
     pokemon = str(pokemon).strip().lower()
 
-    if not pokemon:
+    if pokemon == '':
         print('Error: No Pokemon name specified.')
         return
 
+    print(f'Getting information for {pokemon.capitalize()}...', end='')
     url = POKE_API_URL + pokemon
     resp_msg = requests.get(url)
 
     if resp_msg.status_code == requests.codes.ok:
+        print('success')
         return resp_msg.json()
     else:
-        print(f'Failed to retrieve Pokemon data. Response code: {resp_msg.status_code} ({resp_msg.reason})')
+        print('failure')
+        print(f'Response code: {resp_msg.status_code} ({resp_msg.reason})')
 
 def get_all_pokemon_names():
     """Gets a list of all Pokemon names from the PokeAPI.
@@ -83,7 +76,7 @@ def download_pokemon_artwork(pokemon, filename):
         else:
             print(f'Failed to download artwork for {pokemon}. Response code: {artwork_resp.status_code} ({artwork_resp.reason})')
     else:
-        print(f'Failed to retrieve Pokemon data. Response code: {resp_msg.status_code} ({resp_msg.reason})')
+        print(f'Failed to retrieve Pokemon data. Response code: {resp_msg.status_code} ({resp_msg.reason})')    
 
 if __name__ == '__main__':
     main()
